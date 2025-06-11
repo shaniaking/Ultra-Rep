@@ -2,52 +2,42 @@ from flask import Flask, request, jsonify
 import pandas as pd
 import joblib
 
-# load model
 model = joblib.load('sales_model.pkl')
-
-# flask app
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    return "Sales Engagement Prediction API is now running."
+    prediction_result = ""
 
-# make the prediction
-@app.route('/predict', methods=['POST'])
-def predict():
-    try:
-        data = request.get_json()
+    if request.method == 'POST':
+        try:
+            script_score = float(request.form['script_score'])
+            call_time = float(request.form['call_time'])
+            sentiment_score = float(request.form['sentiment_score'])
 
-        # column order 
-        columns = ['script_score', 'call_time', 'sentiment_score']
-        df = pd.DataFrame([[data[col] for col in columns]], columns=columns)
+            columns = ['script_score', 'call_time', 'sentiment_score']
+            df = pd.DataFrame([[script_score, call_time, sentiment_score]], columns=columns)
+            prediction = model.predict(df.to_numpy())[0]
+            message = "Likely to Convert" if prediction == 1 else "Unlikely to Convert"
+            prediction_result = f"<h3>Prediction: {message} (value: {prediction})</h3>"
 
-        # disable feature names checking 
-        prediction = model.predict(df.to_numpy())[0]
+        except Exception as e:
+            prediction_result = f"<p style='color:red;'>Error: {str(e)}</p>"
 
-        return jsonify({
-            'prediction': int(prediction),
-            'message': "Likely to Convert" if prediction == 1 else "Unlikely to Convert"
-        })
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
-    
-# hardcoded prediciton
-@app.route('/', methods=['GET'])
-def demo_prediction():
-    # example hardcoded input values
-    demo_input = {
-        "script_score": 0.7,
-        "call_time": 4.2,
-        "sentiment_score": 0.3
-    }
+    return f"""
+        <h1>Sales Engagement Prediction API is now running.</h1>
+        <form method="post">
+            <label>Script Score (0.0 - 1.0):</label><br>
+            <input type="text" name="script_score" required><br><br>
 
-    columns = ['script_score', 'call_time', 'sentiment_score']
-    df = pd.DataFrame([[demo_input[col] for col in columns]], columns=columns)
-    prediction = model.predict(df.to_numpy())[0]
+            <label>Call Time (minutes):</label><br>
+            <input type="text" name="call_time" required><br><br>
 
-    message = "Likely to Convert" if prediction == 1 else "Unlikely to Convert"
-    return f"<h2>Prediction: {message} (value: {prediction})</h2>"
-    
-if __name__ == '__main__':
-    app.run(debug=True)
+            <label>Sentiment Score (-1.0 to 1.0):</label><br>
+            <input type="text" name="sentiment_score" required><br><br>
+
+            <input type="submit" value="Predict">
+        </form>
+        <br>
+        {prediction_result}
+    """
