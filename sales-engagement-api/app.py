@@ -12,6 +12,7 @@ app = Flask(__name__)
 def home():
     return "Sales Engagement Prediction API is now running."
 
+# make the prediction
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
@@ -30,6 +31,23 @@ def predict():
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 400
+    
+# hardcoded prediciton
+@app.route('/', methods=['GET'])
+def demo_prediction():
+    # example hardcoded input values
+    demo_input = {
+        "script_score": 0.7,
+        "call_time": 4.2,
+        "sentiment_score": 0.3
+    }
+
+    columns = ['script_score', 'call_time', 'sentiment_score']
+    df = pd.DataFrame([[demo_input[col] for col in columns]], columns=columns)
+    prediction = model.predict(df.to_numpy())[0]
+
+    message = "Likely to Convert" if prediction == 1 else "Unlikely to Convert"
+    return f"<h2>Prediction: {message} (value: {prediction})</h2>"
     
 if __name__ == '__main__':
     app.run(debug=True)
