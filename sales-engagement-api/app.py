@@ -5,6 +5,25 @@ import joblib
 model = joblib.load('sales_model.pkl')
 app = Flask(__name__)
 
+@app.route('/predict', methods=['POST'])
+def predict():
+    try:
+        data = request.get_json()
+
+        # column order 
+        columns = ['script_score', 'call_time', 'sentiment_score']
+        df = pd.DataFrame([[data[col] for col in columns]], columns=columns)
+
+        prediction = model.predict(df.to_numpy())[0]
+
+        return jsonify({
+            'prediction': int(prediction),
+            'message': "Likely to Convert" if prediction == 1 else "Unlikely to Convert"
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     prediction_result = ""
