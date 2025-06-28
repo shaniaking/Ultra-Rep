@@ -10,11 +10,11 @@ def predict():
     try:
         data = request.get_json()
 
-        # column order 
-        columns = ['script_score', 'call_time', 'sentiment_score']
-        df = pd.DataFrame([[data[col] for col in columns]], columns=columns)
+        # Correct column order for model
+        columns = ['call_time', 'sentiment_score', 'script_score']
+        df = pd.DataFrame([[data['call_time'], data['sentiment_score'], data['script_score']]], columns=columns)
 
-        prediction = model.predict(df.to_numpy())[0]
+        prediction = model.predict(df)[0]
 
         return jsonify({
             'prediction': int(prediction),
@@ -34,9 +34,10 @@ def home():
             call_time = float(request.form['call_time'])
             sentiment_score = float(request.form['sentiment_score'])
 
-            columns = ['script_score', 'call_time', 'sentiment_score']
-            df = pd.DataFrame([[script_score, call_time, sentiment_score]], columns=columns)
-            prediction = model.predict(df.to_numpy())[0]
+            # Correct order for model input
+            columns = ['call_time', 'sentiment_score', 'script_score']
+            df = pd.DataFrame([[call_time, sentiment_score, script_score]], columns=columns)
+            prediction = model.predict(df)[0]
             message = "Likely to Convert" if prediction == 1 else "Unlikely to Convert"
             prediction_result = f"<h3>Prediction: {message} (value: {prediction})</h3>"
 
