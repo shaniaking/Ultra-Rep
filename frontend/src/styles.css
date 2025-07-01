@@ -1,4 +1,96 @@
-.App {
-  font-family: sans-serif;
+body {
+  background: #00001e; 
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #0d0d29;
+  border-radius: 10px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.title {
   text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #fa6d43;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin-bottom: 6px;
+  color: #f2f2f4;
+}
+
+.input {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  border-radius: 4px;
+}
+
+.button {
+  padding: 10px 0;
+  color: #f2f2f4;
+  background: #f46d49;
+  border: 2px solid #f46d49;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 8px;
+  transition: background 0.2s ease, border 0.2s ease;
+}
+
+.button:hover:not(.button-disabled) {
+  background: transparent;
+  border: 2px solid #2c2c45;
+}
+
+.button-disabled {
+  background: #a3a3a3;
+  border: 2px solid #a3a3a3;
+  cursor: not-allowed;
+}
+
+
+.error {
+  color: #b91c1c;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 18px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.result-message {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.result-good {
+  background-color: #d1fae5;
+  color: #166534;
+}
+
+.result-bad {
+  background-color: #fee2e2;
+  color: #b91c1c;
 }

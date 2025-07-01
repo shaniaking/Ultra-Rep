@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
 import pandas as pd
 import joblib
+from flask_cors import CORS
 
 model = joblib.load('sales_model.pkl')
 app = Flask(__name__)
+CORS(app, origins="http://localhost:3000") # For local development only
 
 @app.route('/predict', methods=['POST'])
 def predict():
