@@ -1,13 +1,14 @@
 .navbar {
   width: 250px;
-  background: #0d0d29;
-  min-height: 100vh;
+  background: #0b1739;
+  min-height: calc(100vh - 70px);
+  height: calc(100vh - 70px);
   padding-top: 32px;
   display: flex;
   flex-direction: column;
   position: fixed;
   left: 0;
-  top: 0;
+  top: 70px;
   bottom: 0;
   z-index: 10;
 }
@@ -35,7 +36,7 @@
 }
 
 .navbar-link.active {
-  background: #2030DF;
+  background: #2030df;
   color: #fff;
   font-weight: bold;
 }
