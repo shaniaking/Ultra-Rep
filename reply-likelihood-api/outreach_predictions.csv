@@ -1,0 +1,6 @@
+response_time,followups,type_Email,type_LinkedIn,type_DM,prediction,probability
+32.0,4,0,0,0,0,0.375
+1.0,5,1,0,0,0,0.4157
+2.0,5,0,0,0,0,0.3856
+0.0,5,0,0,0,0,0.386
+1.0,1,0,0,0,0,0.3668
