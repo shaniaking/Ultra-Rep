@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap');
+
+body {
+  background: #00001e;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+}
+
+.container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #0d0d29;
+  border-radius: 10px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #fa6d43;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin-bottom: 6px;
+  color: #f2f2f4;
+}
+
+.input {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  border-radius: 4px;
+}
+
+.error {
+  color: #b91c1c;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 18px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.result-message {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.result-good {
+  background-color: #d1fae5;
+  color: #166534;
+}
+
+.result-bad {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.btn, .btn:focus, .btn:active, .btn-primary {
+  background: #f46d49 !important;
+  color: #fff !important;
+  border: 2px solid #f46d49 !important;
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 500;
+  border-radius: 20px;
+  font-size: 14px;
+  padding: 8px 24px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn:hover, .btn-primary:hover {
+  background: transparent !important;
+  color: #fa6d43 !important;
+  border: 1px solid #fa6d43 !important;
+}
+
+.btn:disabled, .btn.disabled {
+  background: #a3a3a3 !important;
+  border: 2px solid #a3a3a3 !important;
+  color: #fff !important;
+  cursor: not-allowed;
+}
+
+.display-card {
+  background: #0B1739 !important;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+}
+
+.display-card .card-title {
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 0.5rem;
+}
+
+.display-card .card-text {
+  color: rgba(255,255,255,0.8);
+  font-size: 14px;
+}
