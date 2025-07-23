@@ -1,0 +1,38 @@
+.custom-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 5px;
+  appearance: none;
+  outline: none;
+  transition: background 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+/* Chrome / WebKit */
+.custom-slider::-webkit-slider-thumb {
+  appearance: none;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 3px solid #fa6d43;
+  margin-top: -7px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.custom-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  background-color: #fa6d43;
+  border: 3px solid #fff;
+}
+
+/* Firefox */
+.custom-slider::-moz-range-thumb {
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 3px solid #fa6d43;
+  cursor: pointer;
+}
