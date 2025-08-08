@@ -87,14 +87,26 @@ body {
   border-radius: 20px;
   font-size: 14px;
   padding: 8px 20px;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease, border 0.2s ease;
+}
+
+.btn-secondary {
+  background: transparent !important;
+  color: #fa6d43 !important;
+  border: 1px solid #fa6d43 !important;
 }
 
 .btn:hover,
 .btn-primary:hover {
   background: transparent !important;
-  color: #fa6d43 !important;
-  border: 1px solid #fa6d43 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+}
+
+.btn-secondary:hover {
+  background: transparent !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
 }
 
 .btn:disabled,
