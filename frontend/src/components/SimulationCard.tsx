@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "./Button.tsx";
 
 interface SimulationCardProps {
   title: string;
@@ -9,13 +10,13 @@ interface SimulationCardProps {
   className?: string;
 }
 
-export default function SimulationCard({ 
-  title, 
-  score, 
-  date, 
-  onAddToPlan, 
+export default function SimulationCard({
+  title,
+  score,
+  date,
+  onAddToPlan,
   onViewReport,
-  className = "col-md-4" 
+  className = "col-md-4",
 }: SimulationCardProps) {
   return (
     <div className={className}>
@@ -25,18 +26,12 @@ export default function SimulationCard({
           <p className="card-text">{score}/100</p>
           <p className="card-text">{date}</p>
           <div className="d-flex gap-2 mt-3">
-            <button 
-              className="btn btn-outline-light" 
-              onClick={onAddToPlan}
-            >
+            <Button variant="secondary" onClick={onAddToPlan}>
               Add to Plan
-            </button>
-            <button 
-              className="btn btn-outline-primary" 
-              onClick={onViewReport}
-            >
+            </Button>
+            <Button variant="primary" onClick={onViewReport}>
               View Full Report
-            </button>
+            </Button>
           </div>
         </div>
       </div>

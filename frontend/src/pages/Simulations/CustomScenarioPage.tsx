@@ -36,7 +36,7 @@ export default function CustomScenarioPage() {
   };
 
   const handleStart = () => {
-    navigate("/simulations/real-time");
+    navigate("/simulations/real-time", { state: { scenario, duration } });
   };
 
   return (

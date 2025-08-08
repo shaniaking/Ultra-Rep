@@ -1,6 +1,7 @@
 import React from "react";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import DraggableComponent from "./DraggableComponent.tsx";
+import Button from "./Button.tsx";
 
 interface DraggableComponentsListProps {
   components: string[];
@@ -50,14 +51,14 @@ export default function DraggableComponentsList({
           </div>
           <div style={{ display: "flex", gap: 12 }}>
             {onCancel && (
-              <button className="btn btn-secondary" onClick={onCancel}>
+              <Button variant="secondary" onClick={onCancel}>
                 Cancel
-              </button>
+              </Button>
             )}
             {onStart && (
-              <button onClick={onStart} className="btn btn-primary">
+              <Button variant="primary" onClick={onStart}>
                 Start Simulation
-              </button>
+              </Button>
             )}
           </div>
         </div>

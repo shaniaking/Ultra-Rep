@@ -1,0 +1,17 @@
+.DS_Store
+Thumbs.db
+node_modules/
+venv/
+dist/
+build/
+*.exe
+*.dll
+*.log
+__pycache__/
+*.pyc
+.vscode/
+.idea/
+*.swp
+.env
+*.key
+*.pem
