@@ -1,47 +1,74 @@
+# app.py — Sales Engagement (Conversion) API
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import pandas as pd
 import joblib
-from flask_cors import CORS
+import os
 
-model = joblib.load('sales_model.pkl')
 app = Flask(__name__)
-CORS(app, origins="http://localhost:3000") # For local development only
+app.url_map.strict_slashes = False  # make /predict and /predict/ both work
+CORS(app, origins=["http://localhost:3000", "https://your-frontend.com"])
 
-@app.route('/predict', methods=['POST'])
+# Load model once at startup
+MODEL_PATH = os.getenv("MODEL_PATH", "sales_model.pkl")
+try:
+    model = joblib.load(MODEL_PATH)
+except Exception as e:
+    raise RuntimeError(f"Failed to load model from {MODEL_PATH}: {e}")
+
+FEATURES = ["call_time", "sentiment_score", "script_score"]
+
+@app.route("/predict", methods=["POST"])
 def predict():
     try:
-        data = request.get_json()
+        data = request.get_json(silent=True) or {}
+        # Validate + coerce numeric fields
+        row = []
+        for col in FEATURES:
+            if col not in data:
+                return jsonify({"error": f"Missing field: '{col}'"}), 400
+            try:
+                row.append(float(data[col]))
+            except (TypeError, ValueError):
+                return jsonify({"error": f"Invalid value for '{col}': {data[col]} (must be numeric)"}), 400
 
-        # Correct column order for model
-        columns = ['call_time', 'sentiment_score', 'script_score']
-        df = pd.DataFrame([[data['call_time'], data['sentiment_score'], data['script_score']]], columns=columns)
+        df = pd.DataFrame([row], columns=FEATURES)
+        y = int(model.predict(df)[0])
 
-        prediction = model.predict(df)[0]
+        # Optional: include proba if the model supports it
+        proba = None
+        try:
+            proba = float(model.predict_proba(df)[0, 1])
+        except Exception:
+            pass
 
-        return jsonify({
-            'prediction': int(prediction),
-            'message': "Likely to Convert" if prediction == 1 else "Unlikely to Convert"
-        })
+        payload = {
+            "prediction": y,
+            "message": "Likely to Convert" if y == 1 else "Unlikely to Convert",
+        }
+        if proba is not None:
+            payload["probability"] = proba
+
+        return jsonify(payload)
+
     except Exception as e:
-        return jsonify({'error': str(e)}), 400
+        return jsonify({"error": str(e)}), 400
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route("/", methods=["GET", "POST"])
 def home():
     prediction_result = ""
 
-    if request.method == 'POST':
+    if request.method == "POST":
         try:
-            script_score = float(request.form['script_score'])
-            call_time = float(request.form['call_time'])
-            sentiment_score = float(request.form['sentiment_score'])
+            script_score = float(request.form["script_score"])
+            call_time = float(request.form["call_time"])
+            sentiment_score = float(request.form["sentiment_score"])
 
-            # Correct order for model input
-            columns = ['call_time', 'sentiment_score', 'script_score']
-            df = pd.DataFrame([[call_time, sentiment_score, script_score]], columns=columns)
-            prediction = model.predict(df)[0]
-            message = "Likely to Convert" if prediction == 1 else "Unlikely to Convert"
-            prediction_result = f"<h3>Prediction: {message} (value: {prediction})</h3>"
+            df = pd.DataFrame([[call_time, sentiment_score, script_score]], columns=FEATURES)
+            y = int(model.predict(df)[0])
+            message = "Likely to Convert" if y == 1 else "Unlikely to Convert"
+            prediction_result = f"<h3>Prediction: {message} (value: {y})</h3>"
 
         except Exception as e:
             prediction_result = f"<p style='color:red;'>Error: {str(e)}</p>"
@@ -63,9 +90,12 @@ def home():
         <br>
         {prediction_result}
     """
-#for Render
-import os
+
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({"status": "ok"})
+
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000)) 
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
