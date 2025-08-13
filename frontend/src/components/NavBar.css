@@ -11,6 +11,9 @@
   top: 70px;
   bottom: 0;
   z-index: 10;
+  border-top: 2px solid transparent;
+  border-image: linear-gradient(to right, #0b1739, #232e4d 50%, #0b1739);
+  border-image-slice: 1;
 }
 
 .navbar nav {

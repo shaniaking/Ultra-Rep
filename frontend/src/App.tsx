@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "./components/Navbar.tsx";
@@ -34,15 +35,23 @@ function AppWrapper() {
     location.pathname.startsWith(path)
   );
 
+  const simMode = location.pathname.startsWith("/simulations/real-time");
+
+  const navigate = useNavigate();
+
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "#00001e" }}>
       {!shouldHideNav && <NavBar />}
-      <TopBar navbarWidth={!shouldHideNav ? NAVBAR_WIDTH : 0} />
+      <TopBar
+        simMode={simMode}
+        onCancel={() => navigate("/simulations/custom")}
+        onComplete={() => navigate("/simulations/report")}
+      />
       {/* Main content area */}
       <main
         style={{
           flex: 1,
-          background: "#00001e",
+          background: "#081028",
           position: "relative",
           transition: "margin-left 0.2s, padding-top 0.2s",
           marginLeft: !shouldHideNav ? NAVBAR_WIDTH : 0,
