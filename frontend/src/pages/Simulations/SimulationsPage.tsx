@@ -5,6 +5,10 @@ import Modal from "../../components/Modal.tsx";
 import StatCard from "../../components/StatCard.tsx";
 import SimulationCard from "../../components/SimulationCard.tsx";
 import ScenarioCard from "../../components/ScenarioCard.tsx";
+import sim_stat from "../../components/assets/sim_stat.svg";
+import score_stat from "../../components/assets/score_stat.svg";
+import complete_stat from "../../components/assets/complete_stat.svg";
+import improve_stat from "../../components/assets/improve_stat.svg";
 
 const mockSimulations = [
   {
@@ -53,18 +57,42 @@ export default function SimulationsPage() {
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>Simulations</h2>
+        <h3>Simulations</h3>
         <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-          Start Simulation
+          Start New Simulation
         </button>
       </div>
 
       <div className="mb-4">
         <div className="row">
-          <StatCard title="Total Simulations" value={mockSimulations.length} />
-          <StatCard title="Average Score" value="84.7" />
-          <StatCard title="Completion Rate" value="91.6%" />
-          <StatCard title="Improvement Rate" value="17.3%" />
+          <StatCard
+            title="Total Simulations"
+            value={24}
+            change={12}
+            isIncrease={false}
+            icon={<img src={sim_stat} alt="Total Simulations" />}
+          />
+          <StatCard
+            title="Average Score"
+            value="86%"
+            change={8}
+            isIncrease={true}
+            icon={<img src={score_stat} alt="Average Score" />}
+          />
+          <StatCard
+            title="Completion Rate"
+            value="92%"
+            change={5}
+            isIncrease={true}
+            icon={<img src={complete_stat} alt="Completion Rate" />}
+          />
+          <StatCard
+            title="Improvement Rate"
+            value="92%"
+            change={3}
+            isIncrease={true}
+            icon={<img src={improve_stat} alt="Improvement Rate" />}
+          />
         </div>
       </div>
 
