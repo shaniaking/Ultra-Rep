@@ -10,7 +10,7 @@ export default function SimulationReportPage() {
   return (
     <div>
       <h2>Simulation Report & Playback Transcript</h2>
-      <h4 className="text-muted mb-3">{scenario}</h4>
+      <h4 className="label">{scenario}</h4>
       <div className="mt-3">
         <div className="d-flex justify-content-between">
           <ProgressCard title="Overall Score" score={87} variant="success" />
