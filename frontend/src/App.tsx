@@ -1,4 +1,3 @@
-// App.tsx
 import {
   BrowserRouter as Router,
   Routes,
@@ -90,7 +89,7 @@ function AppWrapper() {
 
 export default function App() {
   return (
-    <Router>
+    <Router basename="/Ultra-Rep">
       <AppWrapper />
     </Router>
   );
