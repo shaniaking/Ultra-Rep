@@ -2,12 +2,17 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import ProgressCard from "../../components/ProgressCard.tsx";
 import Button from "../../components/Button.tsx";
+import { Badge } from "../../components/Badge.tsx";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/Tabs.tsx";
+import Question from "../../components/assets/question.png"; 
+import Graph from "../../components/assets/graph.png"; 
+import Message from "../../components/assets/messaging.png"; 
 
 const containerStyle: React.CSSProperties = {
   display: "flex",
   flexDirection: "row",
   width: "100%",
+  height: "425px",
   paddingTop: "1vw",
   paddingBottom: "1vw",
   fontSize: "24px",
@@ -27,6 +32,11 @@ const keyMomentsContainerStyle: React.CSSProperties = {
   flexDirection: "column",
 }
 
+const stretchCardStyle: React.CSSProperties = {
+  flex: 1,
+  display: "flex",
+};
+
 const secondContainerStyle: React.CSSProperties = {
   display: "flex",
   width: "100%",
@@ -35,14 +45,20 @@ const secondContainerStyle: React.CSSProperties = {
 
 const simulationTabsStyle: React.CSSProperties = {
   display: "flex",
-  width: "33%",
+  flex: 1.75,
   flexDirection: "column",
 }
 
 const coachingRecommendationStyle: React.CSSProperties = {
   display: "flex",
-  width: "66%%",
-  marginLeft: "16px",
+  flex: 1.25,
+}
+
+const cardLink: React.CSSProperties = {
+  color: "#2030DF",
+  textDecoration: "none",
+  marginTop: "8px",
+  cursor: "pointer",
 }
 
 export default function SimulationReportPage() {
@@ -64,48 +80,64 @@ export default function SimulationReportPage() {
           />
         </div>
       <div style={containerStyle}>
-        <div style={performanceHighlightsContainerStyle}>
-          Performance Highlights
-          <div className="strengths">
-            <div className="card mb-3 display-card">
+        <div style={performanceHighlightsContainerStyle} className="">
+          <div className="mb-3">Performance Highlights</div>
+          <div className="strengths" style={stretchCardStyle}>
+            <div className="card mb-3 display-card" style={{ flex: 1 }}>
               <div className="card-body">
                 <h5 className="card-title">Strengths</h5>
-                <p className="card-text"> mins</p>
+                <p className="card-text">• Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                <p className="card-text">• Vivamus lacinia odio vitae vestibulum vestibulum</p>
+                <p className="card-text">• Cras ultricies ligula sed magna dictum porta</p>
               </div>
             </div>
           </div>
-          <div className="areas-for-improvement">
-            <div className="card mb-3 display-card">
+          <div className="areas-for-improvement" style={stretchCardStyle}>
+            <div className="card mb-3 display-card" style={{ flex: 1 }}>
               <div className="card-body">
                 <h5 className="card-title">Areas for Improvement</h5>
-                <p className="card-text"> mins</p>
+                <p className="card-text">• Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                <p className="card-text">• Vivamus lacinia odio vitae vestibulum vestibulum</p>
+                <p className="card-text">• Cras ultricies ligula sed magna dictum porta</p>
               </div>
             </div>
           </div>
           </div>
         <div style={keyMomentsContainerStyle}>
-          Key Moments
-          <div className="strengths">
-            <div className="card mb-3 display-card">
-              <div className="card-body">
-                <h5 className="card-title">Strengths</h5>
-                <p className="card-text"> mins</p>
+          <div className="mb-3">Key Moments</div>
+          <div className="strengths" style={stretchCardStyle}>
+            <div className="card mb-3 display-card" style={{ flex: 1}}>
+              <div className="card-body" style={{ display: "flex", flexDirection: "row" }}>
+                <Badge variant="default" className="">00:35</Badge>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <h5 className="card-title">Areas for Improvement</h5>
+                  <p className="card-text"> mins</p>
+                  <Badge variant="default" className="">00:35</Badge>
+                </div>
               </div>
             </div>
           </div>
-          <div className="areas-for-improvement">
-            <div className="card mb-3 display-card">
-              <div className="card-body">
-                <h5 className="card-title">Areas for Improvement</h5>
-                <p className="card-text"> mins</p>
+          <div className="areas-for-improvement" style={stretchCardStyle}>
+            <div className="card mb-3 display-card" style={{ flex: 1 }}>
+              <div className="card-body" style={{ display: "flex", flexDirection: "row" }}>
+                <Badge variant="default" className="">00:35</Badge>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <h5 className="card-title">Areas for Improvement</h5>
+                  <p className="card-text"> mins</p>
+                  <Badge variant="default" className="">00:35</Badge>
+                </div>
               </div>
             </div>
           </div>
-          <div className="areas-for-improvement">
-            <div className="card mb-3 display-card">
-              <div className="card-body">
-                <h5 className="card-title">Areas for Improvement</h5>
-                <p className="card-text"> mins</p>
+          <div className="areas-for-improvement" style={stretchCardStyle}>
+            <div className="card mb-3 display-card" style={{ flex: 1 }}>
+              <div className="card-body" style={{ display: "flex", flexDirection: "row" }}>
+                <Badge variant="default" className="">00:35</Badge>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <h5 className="card-title">Areas for Improvement</h5>
+                  <p className="card-text"> mins</p>
+                  <Badge variant="default" className="">00:35</Badge>
+                </div>
               </div>
             </div>
           </div>
@@ -133,10 +165,45 @@ export default function SimulationReportPage() {
             </Tabs>
         </div>
         <div style={coachingRecommendationStyle}>
-          <div className="card display-card">
+          <div className="card display-card" style={{ width: "100%" }}>
               <div className="card-body">
-                <h5 className="card-title">Coaching Recommendations</h5>
-                <p className="card-text"> mins</p>
+                <h5 className="card-title" style={{ fontSize: "20px" }}>Coaching Recommendations</h5>
+                <div style={{ display: "flex", flexDirection: "row", marginBottom: "16px", marginTop: "16px" }}>
+                  <img src={ Question } alt="Question Mark" style={{ width: "48px", height: "48px" }} />
+                  <div style = {{ display: "flex", flexDirection: "column", marginLeft: "16px" }}>
+                    <p className="card-title">Improve Discovery Questioning</p>
+                    <div className="card-text">Practice asking more open-ended questions to understand the customer's current situation before presenting solutions. Try the SPIN questioning technique (Situation, Problem, Implication, Need-payoff).</div>
+                    <a href="#" style={ cardLink }>
+                      View Training Resource
+                    </a>
+                  </div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "row", marginBottom: "16px", marginTop: "16px" }}>
+                  <img src={ Graph } alt="Graph" style={{ width: "48px", height: "48px" }} />
+                  <div style = {{ display: "flex", flexDirection: "column", marginLeft: "16px" }}>
+                    <p className="card-title">Quanity Value Propositions</p>
+                    <div className="card-text">When discussing benefits, include specific metrics and ROI figures that are relevant to the customer's industry. This makes your value proposition more compelling and easier to justify.</div>
+                    <a href="#" style={ cardLink }>
+                      View Training Resource
+                    </a>
+                  </div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "row", marginTop: "16px" }}>
+                  <img src={ Message } alt="Question Mark" style={{ width: "48px", height: "48px" }} />
+                  <div style = {{ display: "flex", flexDirection: "column", marginLeft: "16px" }}>
+                    <p className="card-title">Adjust Speaking Pace</p>
+                    <div className="card-text">Try to slow down slightly during technical explanations to ensure clarity. Practice pausing after key points to allow the information to sink in and give the customer time to respond.</div>
+                    <a href="#" style={ cardLink }>
+                      View Training Resource
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div className="card-body">
+                <h5 className="card-title" style={{ fontSize: "20px" }}>Book 1:1 Coaching</h5>
+                <p className="card-text">Coach Jessica</p>
+                <p className="card-text">Peer Review</p>
+                <p className="card-text">Practice Plan</p>
               </div>
             </div>
         </div>
