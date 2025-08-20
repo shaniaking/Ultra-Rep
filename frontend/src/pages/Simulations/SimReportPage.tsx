@@ -12,7 +12,7 @@ const containerStyle: React.CSSProperties = {
   display: "flex",
   flexDirection: "row",
   width: "100%",
-  height: "425px",
+  height: "500px",
   paddingTop: "1vw",
   paddingBottom: "1vw",
   fontSize: "24px",
@@ -89,6 +89,7 @@ export default function SimulationReportPage() {
                 <p className="card-text">• Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                 <p className="card-text">• Vivamus lacinia odio vitae vestibulum vestibulum</p>
                 <p className="card-text">• Cras ultricies ligula sed magna dictum porta</p>
+                <p className="card-text">• Cras ultricies ligula sed magna dictum porta</p>
               </div>
             </div>
           </div>
@@ -99,6 +100,7 @@ export default function SimulationReportPage() {
                 <p className="card-text">• Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                 <p className="card-text">• Vivamus lacinia odio vitae vestibulum vestibulum</p>
                 <p className="card-text">• Cras ultricies ligula sed magna dictum porta</p>
+                <p className="card-text">• Cras ultricies ligula sed magna dictum porta</p>
               </div>
             </div>
           </div>
@@ -108,11 +110,11 @@ export default function SimulationReportPage() {
           <div className="strengths" style={stretchCardStyle}>
             <div className="card mb-3 display-card" style={{ flex: 1}}>
               <div className="card-body" style={{ display: "flex", flexDirection: "row" }}>
-                <Badge variant="default" className="">00:35</Badge>
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <Badge variant="time" />
+                <div style={{ display: "flex", flexDirection: "column", marginLeft: "16px" }}>
                   <h5 className="card-title">Areas for Improvement</h5>
-                  <p className="card-text"> mins</p>
-                  <Badge variant="default" className="">00:35</Badge>
+                  <p className="card-text">"Tempus fugit celeriter, memoria tenax manet, amici veri adiuvant, amor vincit omnia perpetuo."</p>
+                  <Badge variant="strongRapport" />
                 </div>
               </div>
             </div>
@@ -120,11 +122,11 @@ export default function SimulationReportPage() {
           <div className="areas-for-improvement" style={stretchCardStyle}>
             <div className="card mb-3 display-card" style={{ flex: 1 }}>
               <div className="card-body" style={{ display: "flex", flexDirection: "row" }}>
-                <Badge variant="default" className="">00:35</Badge>
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <Badge variant="time" />
+                <div style={{ display: "flex", flexDirection: "column", marginLeft: "16px"  }}>
                   <h5 className="card-title">Areas for Improvement</h5>
-                  <p className="card-text"> mins</p>
-                  <Badge variant="default" className="">00:35</Badge>
+                  <p className="card-text">"Vita brevis est, ars longa, occasio praeceps, experimentum periculosum, iudicium difficile semper manet."</p>
+                  <Badge variant="missedObjection" />
                 </div>
               </div>
             </div>
@@ -132,11 +134,11 @@ export default function SimulationReportPage() {
           <div className="areas-for-improvement" style={stretchCardStyle}>
             <div className="card mb-3 display-card" style={{ flex: 1 }}>
               <div className="card-body" style={{ display: "flex", flexDirection: "row" }}>
-                <Badge variant="default" className="">00:35</Badge>
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <Badge variant="time" />
+                <div style={{ display: "flex", flexDirection: "column", marginLeft: "16px"  }}>
                   <h5 className="card-title">Areas for Improvement</h5>
-                  <p className="card-text"> mins</p>
-                  <Badge variant="default" className="">00:35</Badge>
+                  <p className="card-text">"Scientia potentia est, sed sapientia vera ducit, virtus crescet, fortuna variabilis semper latet."</p>
+                  <Badge variant="tooFast" />
                 </div>
               </div>
             </div>

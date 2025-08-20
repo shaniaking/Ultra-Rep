@@ -1,46 +1,92 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
 
 function cn(...classes: (string | undefined | false | null)[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
-  {
-    variants: {
-      variant: {
-        default:
-          "border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
-        secondary:
-          "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
-        destructive:
-          "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
-        outline:
-          "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
-)
+const baseBadgeStyles: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  borderRadius: "1rem",
+  border: "1px solid",
+  padding: "0.125rem 0.5rem",
+  fontSize: "0.75rem",
+  fontWeight: 500,
+  width: "fit-content",
+  height: "1.5rem",
+  whiteSpace: "nowrap",
+  flexShrink: 0,
+  gap: "0.25rem",
+  overflow: "hidden",
+  transition: "color 0.2s, box-shadow 0.2s",
+};
+
+const variantStyles: Record<string, React.CSSProperties> = {
+  time: {
+    borderColor: "transparent",
+    backgroundColor: "#1677FF1A",
+    color: "#1677FF",
+    outline: "1px solid #1677FF",
+  },
+  goodQuestion: {
+    borderColor: "transparent",
+    backgroundColor: "#1677FF1A",
+    color: "#1677FF",
+    outline: "1px solid #1677FF",
+  },
+  missedObjection: {
+    borderColor: "transparent",
+    backgroundColor: "#FF98001A",
+    color: "#FF9800",
+    outline: "1px solid #FF9800",
+  },
+  tooFast: {
+    borderColor: "transparent",
+    backgroundColor: "#F9371A33",
+    color: "#F9371A",
+    outline: "1px solid #F9371A",
+  },
+  strongRapport: {
+    borderColor: "transparent",
+    backgroundColor: "#00FF4D1A",
+    color: "#00FF4D",
+    outline: "1px solid #00FF4D",
+  },
+};
+
+const variantText: Record<string, string> = {
+  time: "00:35",
+  goodQuestion: "Good Question",
+  missedObjection: "Missed Objection",
+  tooFast: "Too Fast",
+  strongRapport: "Strong Rapport",
+};
+
 function Badge<T extends React.ElementType = "span">({
   className,
-  variant,
+  variant = "time",
   asChild = false,
+  style,
+  children,
   ...props
-}: React.ComponentProps<T> & VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
+}: React.ComponentProps<T> & {
+  variant?: keyof typeof variantStyles;
+  asChild?: boolean;
+}) {
   const Comp: React.ElementType = asChild ? Slot : "span";
 
+  const combinedStyles = { ...baseBadgeStyles, ...variantStyles[variant], ...style };
+
+  const content = children ?? variantText[variant];
+
   return (
-    <Comp
-      data-slot="badge"
-      className={cn(badgeVariants({ variant }), className)}
-      {...props}
-    />
+    <Comp style={combinedStyles} {...props}>
+      {content}
+    </Comp>
   );
 }
 
-export { Badge, badgeVariants };
+export { Badge };
