@@ -6,8 +6,8 @@ simulate_app = Flask(__name__)
 CORS(simulate_app, origins=["http://localhost:3000", "https://your-frontend.com"])
 
 CONVERSION_API_URL = "https://sales-engagement-api.onrender.com/predict"
-REPLY_API_URL      = os.getenv("REPLY_API_URL",      "https://reply-likelihood-api.onrender.com/predict")
-FEEDBACK_API_URL   = os.getenv("FEEDBACK_API_URL",   "https://feedback-score-api.onrender.com/predict")
+REPLY_API_URL      = "https://reply-likelihood-api.onrender.com/predict"
+FEEDBACK_API_URL   = "https://feedback-score-api.onrender.com/predict"
 
 def try_post(url, payload, timeout=60):
     """post once, if 404 and no trailing slash, try with slash once"""
