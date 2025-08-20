@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import Button from "../../components/Button.tsx";
 import LiveMetrics from "../../components/LiveMetrics.tsx";
-import AiAvatar from "../../components/assets/ai_avatar.svg";
-import UserAvatar from "../../components/assets/user_avatar.svg";
 import Clock from "../../components/assets/clock_icon.svg";
+import ChatArea from "../../components/ChatArea.tsx";
+import RealTimeTips from "../../components/RealTimeTips.tsx";
 
 // Style constants
 const containerStyle: React.CSSProperties = {
@@ -41,25 +40,11 @@ const chatTranscriptWrapperStyle: React.CSSProperties = {
   display: "flex",
   flex: 1,
   overflow: "hidden",
-};
-
-const chatAreaStyle: React.CSSProperties = {
-  flex: 2,
-  display: "flex",
-  flexDirection: "column",
-  padding: "24px",
-  gap: "12px",
-  minWidth: 0,
-};
-
-const messageListStyle: React.CSSProperties = {
-  flex: 1,
-  overflowY: "auto",
-  paddingRight: "12px",
+  minHeight: 0,
 };
 
 const transcriptPanelStyle: React.CSSProperties = {
-  width: "40%",
+  width: "38%",
   background: "#0B1739",
   padding: "24px",
   borderLeft: "1px solid #1F2C4A",
@@ -68,34 +53,12 @@ const transcriptPanelStyle: React.CSSProperties = {
 };
 
 const sidebarStyle: React.CSSProperties = {
-  width: "420px",
+  width: "400px",
   padding: "0 24px 24px 24px",
   display: "flex",
   flexDirection: "column",
   gap: "24px",
   background: "#081028",
-};
-
-const inputRowStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: "12px",
-};
-
-const inputStyle: React.CSSProperties = {
-  borderRadius: "20px",
-  background: "#232E4C",
-  border: "none",
-  color: "#fff",
-  padding: "10px 15px",
-  flex: 1,
-};
-
-const realTimeTipsStyle: React.CSSProperties = {
-  background: "#0B1739",
-  borderRadius: "12px",
-  padding: "20px 24px",
-  color: "#fff",
 };
 
 export default function RealTimeSimPage() {
@@ -119,6 +82,10 @@ export default function RealTimeSimPage() {
   ]);
 
   const [input, setInput] = useState("");
+  const [isAiTyping, setIsAiTyping] = useState(false);
+  const [isUserTyping, setIsUserTyping] = useState(false);
+  const typingTimeoutRef = useRef<number | null>(null);
+  const elapsedSecondsRef = useRef(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const [metrics] = useState({
@@ -129,27 +96,100 @@ export default function RealTimeSimPage() {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isAiTyping, isUserTyping]);
+
+  // Simulate AI responses with typing indicator
+  const simulateAiResponse = () => {
+    const aiResponses = [
+      "That sounds interesting. What makes your solution different from others in the market?",
+      "Let me think about that. Can you send me some more information via email?",
+      "We're actually using Salesforce right now. I'm not really looking to switch CRM systems at this moment.",
+      "I want to know more about Acme Solutions. What are the key features?",
+    ];
+
+    const randomResponse =
+      aiResponses[Math.floor(Math.random() * aiResponses.length)];
+    const typingDelay = Math.random() * 2000 + 1500; // 1.5-3.5 seconds for typing
+
+    setIsAiTyping(true);
+
+    setTimeout(() => {
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "AI",
+          text: randomResponse,
+          timestamp: elapsedSecondsRef.current, // Use ref to get current elapsed time
+        },
+      ]);
+      setIsAiTyping(false);
+    }, typingDelay);
+  };
+
+  const handleInputChange = (value: string) => {
+    setInput(value);
+
+    if (value.trim() && !isUserTyping) {
+      setIsUserTyping(true);
+    }
+
+    // Clear existing timeout
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    // If input is empty, hide typing indicator immediately
+    if (!value.trim()) {
+      setIsUserTyping(false);
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+    }
+  };
 
   const handleSend = () => {
     if (!input.trim()) return;
+
+    setIsUserTyping(false);
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
     setMessages((prev) => [
       ...prev,
       {
         sender: "User",
         text: input,
-        timestamp: elapsedSeconds, // <- add this
+        timestamp: elapsedSeconds,
       },
     ]);
     setInput("");
+
+    // Trigger AI response after user sends message (with small delay)
+    setTimeout(() => {
+      simulateAiResponse();
+    }, 500);
   };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setElapsedSeconds((prev) => prev + 1);
+      setElapsedSeconds((prev) => {
+        const newValue = prev + 1;
+        elapsedSecondsRef.current = newValue; // Keep ref in sync
+        return newValue;
+      });
     }, 1000);
 
     return () => clearInterval(interval);
+  }, []);
+
+  // Cleanup typing timeout on component unmount
+  useEffect(() => {
+    return () => {
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+    };
   }, []);
 
   const formatElapsed = (seconds: number) => {
@@ -162,6 +202,7 @@ export default function RealTimeSimPage() {
     <div style={containerStyle}>
       {/* Left Section: Header + Chat + Transcript */}
       <div style={leftColumnStyle}>
+        {/* Header */}
         <div style={headerStyle}>
           <span>{scenario}</span>
           <span
@@ -180,81 +221,15 @@ export default function RealTimeSimPage() {
         </div>
 
         <div style={chatTranscriptWrapperStyle}>
-          {/* Chat */}
-          <div style={chatAreaStyle}>
-            <div style={messageListStyle}>
-              {messages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    display: "flex",
-                    justifyContent:
-                      msg.sender === "AI" ? "flex-end" : "flex-start",
-                    marginBottom: "14px",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection:
-                        msg.sender === "AI" ? "row-reverse" : "row",
-                      alignItems: "flex-start",
-                      gap: "8px",
-                    }}
-                  >
-                    {/* Profile Circle */}
-                    <div
-                      style={{
-                        background: msg.sender === "AI" ? "#172343" : "#231F3A",
-                        borderRadius: "50%",
-                        width: 32,
-                        height: 32,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "18px",
-                      }}
-                    >
-                      <img
-                        src={msg.sender === "AI" ? AiAvatar : UserAvatar}
-                        alt={msg.sender === "AI" ? "AI Avatar" : "User Avatar"}
-                      />
-                    </div>
-                    {/* Message Bubble */}
-                    <div
-                      style={{
-                        background: msg.sender === "AI" ? "#081028" : "#232E4D",
-                        borderRadius: "12px",
-                        padding: "12px 16px",
-                        fontSize: "15px",
-                        lineHeight: "1.5",
-                        flexGrow: 1,
-                        maxWidth: "70%",
-                      }}
-                    >
-                      {msg.text}
-                    </div>
-                  </div>
-                </div>
-              ))}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Input */}
-            <div style={inputRowStyle}>
-              <input
-                type="text"
-                style={inputStyle}
-                placeholder="Type your message..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSend()}
-              />
-              <Button variant="primary" onClick={handleSend}>
-                Send
-              </Button>
-            </div>
-          </div>
+          {/* Chat Area */}
+          <ChatArea
+            messages={messages}
+            input={input}
+            onInputChange={handleInputChange}
+            onSend={handleSend}
+            isAiTyping={isAiTyping}
+            isUserTyping={isUserTyping}
+          />
 
           {/* Transcript */}
           <div style={transcriptPanelStyle}>
@@ -280,6 +255,31 @@ export default function RealTimeSimPage() {
                 {formatElapsed(msg.timestamp)}): {msg.text}
               </div>
             ))}
+
+            {isUserTyping && (
+              <div
+                style={{
+                  fontSize: "14px",
+                  marginBottom: "12px",
+                  color: "#9ca3af",
+                  fontStyle: "italic",
+                }}
+              >
+                <strong>You</strong> are typing...
+              </div>
+            )}
+            {isAiTyping && (
+              <div
+                style={{
+                  fontSize: "14px",
+                  marginBottom: "12px",
+                  color: "#9ca3af",
+                  fontStyle: "italic",
+                }}
+              >
+                <strong>Customer</strong> is typing...
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -287,38 +287,20 @@ export default function RealTimeSimPage() {
       {/* Sidebar */}
       <div style={sidebarStyle}>
         <LiveMetrics metrics={metrics} />
-        <div style={realTimeTipsStyle}>
-          <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>
-            Real-Time Tips
-          </h3>
-          <div
-            style={{
-              background: "#0d1a3a",
-              border: "1px solid #3b82f6",
-              borderRadius: 8,
-              padding: 12,
-              marginBottom: 12,
-            }}
-          >
-            <div style={{ fontWeight: "bold" }}>Good job!</div>
-            <div style={{ fontSize: 14, color: "#cfd4e0" }}>
-              Placeholder tips
-            </div>
-          </div>
-          <div
-            style={{
-              background: "#0d1a3a",
-              border: "1px solid #facc15",
-              borderRadius: 8,
-              padding: 12,
-            }}
-          >
-            <div style={{ fontWeight: "bold" }}>Suggestion:</div>
-            <div style={{ fontSize: 14, color: "#cfd4e0" }}>
-              Placeholder tips
-            </div>
-          </div>
-        </div>
+        <RealTimeTips
+          tips={[
+            {
+              type: "success",
+              title: "Good job!",
+              content: "Placeholder tips",
+            },
+            {
+              type: "suggestion",
+              title: "Suggestion:",
+              content: "Placeholder tips",
+            },
+          ]}
+        />
       </div>
     </div>
   );
